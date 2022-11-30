@@ -1,13 +1,14 @@
 from tkinter import *
 import tkinter as tk
 
+
 class EditDialog():
     def __init__(self, parentWin, word=''):
         self.parent = parentWin
         self.word = word
         self.processed = False
 
-    def show(self,settings=False):
+    def show(self, settings=False):
         self.root = Toplevel(self.parent.root)
         x = self.parent.root.winfo_x() + 260
         y = self.parent.root.winfo_y() + 260
@@ -24,7 +25,7 @@ class EditDialog():
         self.root.resizable(False, False)
 
         self.Frame = tk.Frame(self.root)
-        self.Frame.place(x= 10, y=10, height=160, width=225)
+        self.Frame.place(x=10, y=10, height=160, width=225)
         self.Frame.configure(relief='groove')
         self.Frame.configure(borderwidth="2")
         self.Frame.configure(relief="groove")
@@ -58,7 +59,7 @@ class EditDialog():
         self.ButtonCancel.configure(highlightcolor="black")
         self.ButtonCancel.configure(pady="0")
         self.ButtonCancel.configure(text='''Cancel''')
-        self.ButtonCancel.configure(command= self.root.destroy)
+        self.ButtonCancel.configure(command=self.root.destroy)
 
         self.Text = tk.Text(self.Frame)
         self.Text.place(x=10, y=10, height=90, width=200)
@@ -68,19 +69,24 @@ class EditDialog():
         self.Text.configure(highlightbackground="#d9d9d9")
         self.Text.configure(highlightcolor="black")
         self.Text.configure(pady="0")
-        self.Text.delete("1.0",END)
-        self.Text.insert("1.0",self.word)
+        self.Text.delete("1.0", END)
+        self.Text.insert("1.0", self.word)
 
+        self.root.bind('<Control-v>', self.paste_clip)
 
         self.root.grab_set()
         self.Text.focus_set()
         self.root.wait_window()
 
-    def save_word(self,*args):
+    def save_word(self, *args):
         self.processed = True
-        self.new_word = self.Text.get(1.0, END).replace("\n","")
+        self.new_word = self.Text.get(1.0, END).replace("\n", "")
         self.root.grab_release()
         self.root.destroy()
+
+    def paste_clip(self):
+        clip = self.root.clipboard_get()
+        self.Text.insert(tk.INSERT, clip)
 
 
 class YesNoDialog():
@@ -102,7 +108,7 @@ class YesNoDialog():
         self.root.resizable(False, False)
 
         self.Frame = tk.Frame(self.root)
-        self.Frame.place(x= 10, y=10, height=60, width=225)
+        self.Frame.place(x=10, y=10, height=60, width=225)
         self.Frame.configure(relief='groove')
         self.Frame.configure(borderwidth="2")
         self.Frame.configure(relief="groove")
@@ -136,13 +142,13 @@ class YesNoDialog():
         self.ButtonCancel.configure(highlightcolor="black")
         self.ButtonCancel.configure(pady="0")
         self.ButtonCancel.configure(text='''Cancel''')
-        self.ButtonCancel.configure(command= self.root.destroy)
+        self.ButtonCancel.configure(command=self.root.destroy)
 
         self.root.grab_set()
         self.ButtonCancel.focus_set()
         self.root.wait_window()
 
-    def delete_word(self,*args):
+    def delete_word(self, *args):
         self.action(self.word)
         self.deleted = True
         self.root.grab_release()

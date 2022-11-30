@@ -15,11 +15,14 @@ def rapid_translate(word, rapid_key=def_rapid_key):
         "X-RapidAPI-Host": "microsoft-translator-text.p.rapidapi.com"
     }
 
-    result = requests.request("POST", url, json=payload, headers=headers, params=querystring)
-    if result.status_code == 200:
-        return result.json()[0]['translations'][0]['text']
-    else:
-        return f"You may need to specify a rapid access key. See readme.rst file. Access error: {result.reason} {result.status_code}"
+    try:
+        result = requests.request("POST", url, json=payload, headers=headers, params=querystring)
+        if result.status_code == 200:
+            return result.json()[0]['translations'][0]['text']
+        else:
+            return f"You may need to specify a rapid access key. See readme.rst file. Access error: {result.reason} {result.status_code}"
+    except Exception as e:
+        return str(e)
 
 if __name__ == '__main__':
     print(rapid_translate("Double trouble"))
